@@ -2,29 +2,40 @@ class CountdownTimer {
     constructor({selector, targetDate}) {
         this.timerRef = document.querySelector(`${selector}`);
         this.targetDate = targetDate;
+        this.days = '';
+        this.hours = '';
+        this.minutes = '';
+        this.seconds = '';
+        this.time = 0;
     }
   
     timer() {
       setInterval(() => {
         let now = Date.now();
-        let time = this.targetDate- now;
+        this.time = this.targetDate- now;
 
-        const days = Math.floor(time / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const mins = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
-        const secs = Math.floor((time % (1000 * 60)) / 1000);
+        this.days = Math.floor(this.time / (1000 * 60 * 60 * 24));
+        this.hours = Math.floor((this.time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        this.mins = Math.floor((this.time % (1000 * 60 * 60)) / (1000 * 60));
+        this.secs = Math.floor((this.time % (1000 * 60)) / 1000);
+
+        this.displayData()
       
-        this.timerRef.querySelector('[data-value="days"]').textContent = days;
-        this.timerRef.querySelector('[data-value="hours"]').textContent =  hours;
-        this.timerRef.querySelector('[data-value="mins"]').textContent =  mins;
-        this.timerRef.querySelector('[data-value="secs"]').textContent =  secs;
-          
-        if (time < 0) {
-          clearInterval(timer);
-        }
+
       }, 1000);
     }
-  
+
+    displayData() {
+      this.timerRef.querySelector('[data-value="days"]').textContent = this.days;
+      this.timerRef.querySelector('[data-value="hours"]').textContent =  this.hours;
+      this.timerRef.querySelector('[data-value="mins"]').textContent =  this.mins;
+      this.timerRef.querySelector('[data-value="secs"]').textContent =  this.secs;
+
+      if (this.time < 0) {
+        clearInterval(timer);
+      }
+    }
+
     init() {
       return this.timer();
     }
